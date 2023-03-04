@@ -12,3 +12,6 @@ coverage.xml
 .mypy*
 checkec2.py
 tests/*ts
+tests/*json
+tests/*mp2
+tests/*mp3
