@@ -115,7 +115,6 @@ def makeAudioFile(src, dest):
 def tsClean(fqfn):
     try:
         finfo = fileInfo(fqfn)
-        fdur = infoDuration(finfo)
         trks = trackIndexes(finfo)
         fdir, bfn, ext = splitFqfn(fqfn)
         ofn = os.path.join(fdir, f"{bfn}-cleaned{ext}")
@@ -134,11 +133,12 @@ def tsClean(fqfn):
             compareInfo(finfo, dfinfo)
             return ofn
     except Exception as e:
-        errorNotify(sys.exc_info()[2], e)
+        errorRaise(sys.exc_info()[2], e)
 
 
 def compareInfo(finfo, dfinfo):
     try:
+        fdur = infoDuration(finfo)
         dfdur = infoDuration(dfinfo)
         dpc = int((dfdur / fdur) * 100)
         if dpc < 90:

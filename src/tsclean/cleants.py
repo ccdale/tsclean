@@ -28,14 +28,17 @@ def parseInput():
         filename = os.path.abspath(os.path.expanduser(filename))
         if not os.path.exists(filename):
             raise Exception(f"file {filename} does not exist")
-        return filename
+        return filename, args.force
     except Exception as e:
         errorExit(sys.exc_info()[2], e)
 
 
 def doClean():
     try:
-        filename = parseInput()
+        filename, force = parseInput()
         ofn = tsClean(fqfn)
+        if os.path.exists(ofn) and force:
+            os.rename(ofn, fqfn)
+        sys.exit(0)
     except Exception as e:
-        errorNotify(sys.exc_info()[2], e)
+        errorExit(sys.exc_info()[2], e)
