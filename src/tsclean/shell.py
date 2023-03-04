@@ -28,11 +28,16 @@ def shellCommand(cmd, canfail=False):
     """
     try:
         cmd = listCmd(cmd)
-        print(cmd)
+        print(" ".join(cmd))
         ret = subprocess.run(cmd, capture_output=True, text=True)
         if not canfail:
             # raise an exception if cmd returns an error code
             ret.check_returncode()
         return (ret.stdout, ret.stderr)
+    except CalledProcessError as e:
+        msg = f"ERROR: {ret.stderr}\nstdout: {ret.stdout}"
+        msg += f"\nCommand was:\n' '.join(cmd)"
+        print(msg)
+        errorRaise(sys.exc_info()[2], e)
     except Exception as e:
         errorRaise(sys.exc_info()[2], e)
