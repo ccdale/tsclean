@@ -24,7 +24,7 @@ def parseInput():
         parser.add_argument("filename", help="path and filename of file to clean.")
         args = parser.parse_args()
         # filename = " ".join(args.filename)
-        filename = filename.strip()
+        filename = args.filename.strip()
         filename = os.path.abspath(os.path.expanduser(filename))
         if not os.path.exists(filename):
             raise Exception(f"file {filename} does not exist")
