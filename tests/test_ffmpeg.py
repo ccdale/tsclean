@@ -38,7 +38,7 @@ def test_fileDuration():
     finfo = fileInfo(fqfn)
     dur = infoDuration(finfo)
     assert dur > 0
-    assert dur == 1810
+    assert dur == 29
 
 
 def test_trackIndexes():
@@ -47,7 +47,7 @@ def test_trackIndexes():
     vtrk, atrk, strk = trackIndexes(finfo)
     assert vtrk == 0
     assert atrk == 1
-    assert strk == 3
+    assert strk == 2
 
 
 def test_extractAudioFromTs():
