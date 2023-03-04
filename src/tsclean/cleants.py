@@ -36,9 +36,9 @@ def parseInput():
 def doClean():
     try:
         filename, force = parseInput()
-        ofn = tsClean(fqfn)
+        ofn = tsClean(filename)
         if os.path.exists(ofn) and force:
-            os.rename(ofn, fqfn)
+            os.rename(ofn, filename)
         sys.exit(0)
     except Exception as e:
         errorExit(sys.exc_info()[2], e)
