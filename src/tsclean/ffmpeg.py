@@ -5,7 +5,7 @@ import sys
 
 from tsclean import errorExit, errorNotify, errorRaise
 from tsclean.filename import splitFqfn
-from tsclean.shell import shellCommand
+from tsclean.shell import listCmd, shellCommand
 
 
 def fileInfo(fqfn):
@@ -125,7 +125,9 @@ def tsClean(fqfn):
         hassubs = hasSubtitles(finfo)
         if hassubs:
             cmd = f"{cmd} -map 0:{trks[2]} -scodec copy"
-        cmd = f"{cmd} {ofn}"
+        cmd = listCmd(cmd)
+        cmd.append(f"'{ofn}'")
+        # cmd = f"{cmd} {ofn}"
         # print(cmd)
         sout, serr = shellCommand(cmd)
         if os.path.exists(ofn):
