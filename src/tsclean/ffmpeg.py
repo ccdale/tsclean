@@ -130,13 +130,13 @@ def tsClean(fqfn):
         sout, serr = shellCommand(cmd)
         if os.path.exists(ofn):
             dfinfo = fileInfo(ofn)
-            compareInfo(finfo, dfinfo)
+            compareInfo(finfo, dfinfo, hassubs)
             return ofn
     except Exception as e:
         errorRaise(sys.exc_info()[2], e)
 
 
-def compareInfo(finfo, dfinfo):
+def compareInfo(finfo, dfinfo, hassubs):
     try:
         fdur = infoDuration(finfo)
         dfdur = infoDuration(dfinfo)
