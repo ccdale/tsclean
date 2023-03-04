@@ -15,9 +15,12 @@ def parseInput():
         parser.add_argument(
             "-v", "--version", action="version", version=f"%(prog)s {__version__}"
         )
-        # parser.add_argument(
-        #     "-f", "--force", help="Invalidate cached information", action="store_true"
-        # )
+        parser.add_argument(
+            "-f",
+            "--force",
+            help="Overwrite input file with output file if sanity tests pass.",
+            action="store_true",
+        )
         parser.add_argument("filename", help="path and filename of file to clean.")
         args = parser.parse_args()
         filename = " ".join(args.filename)
