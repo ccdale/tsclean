@@ -43,7 +43,7 @@ def hasSubtitles(finfo):
         errorNotify(sys.exc_info()[2], e)
 
 
-def fileDuration(finfo):
+def infoDuration(finfo):
     try:
         dur = 0
         stream = getStreamType(finfo, stype="video")
@@ -115,6 +115,7 @@ def makeAudioFile(src, dest):
 def tsClean(fqfn):
     try:
         finfo = fileInfo(fqfn)
+        fdur = infoDuration(finfo)
         trks = trackIndexes(finfo)
         fdir, bfn, ext = splitFqfn(fqfn)
         ofn = os.path.join(fdir, f"{bfn}-cleaned{ext}")
@@ -126,18 +127,31 @@ def tsClean(fqfn):
         if hassubs:
             cmd = f"{cmd} -map 0:{trks[2]} -scodec copy"
         cmd = f"{cmd} {ofn}"
-        print(cmd)
+        # print(cmd)
         sout, serr = shellCommand(cmd)
         if os.path.exists(ofn):
             dfinfo = fileInfo(ofn)
-            dtrks = trackIndexes(dfinfo)
-            print(f"{trks=}, {dtrks=}")
-            for cn in [0, 1]:
-                if dtrks[cn] != trks[cn]:
-                    raise Exception(f"missing track {cn} in output file {ofn}")
-            if hassubs:
-                if len(dtrks) != 3:
-                    raise Exception(f"subs missing from output file {ofn}")
+            compareInfo(finfo, dfinfo)
             return ofn
     except Exception as e:
         errorNotify(sys.exc_info()[2], e)
+
+
+def compareInfo(finfo, dfinfo):
+    try:
+        dfdur = infoDuration(dfinfo)
+        dpc = int((dfdur / fdur) * 100)
+        if dpc < 90:
+            raise Exception(
+                f"cleaned file is too short ({dfdur}s) {dpc}% of original length ({fdur}s)."
+            )
+        trks = trackIndexes(finfo)
+        dtrks = trackIndexes(dfinfo)
+        for cn in [0, 1]:
+            if dtrks[cn] != trks[cn]:
+                raise Exception(f"missing track {cn} in output file {ofn}")
+        if hassubs:
+            if len(dtrks) != 3:
+                raise Exception(f"subs missing from output file {ofn}")
+    except Exception as e:
+        errorRaise(sys.exc_info()[2], e)

@@ -2,7 +2,7 @@ import os
 
 from tsclean.ffmpeg import (
     extractAudioFromTs,
-    fileDuration,
+    infoDuration,
     fileInfo,
     getStreamType,
     hasSubtitles,
@@ -36,7 +36,7 @@ def test_hasSubtitles():
 def test_fileDuration():
     fqfn = os.path.abspath("tests/BBCTVChannel.ts")
     finfo = fileInfo(fqfn)
-    dur = fileDuration(finfo)
+    dur = infoDuration(finfo)
     assert dur > 0
     assert dur == 1810
 
