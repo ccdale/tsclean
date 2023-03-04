@@ -1,6 +1,7 @@
 """subprocess commands to send via a shell."""
 import sys
 import subprocess
+from subprocess import CalledProcessError
 
 from tsclean import errorRaise
 
