@@ -157,13 +157,13 @@ def tsClean(fqfn):
         sout, serr = shellCommand(cmd)
         if os.path.exists(ofn):
             dfinfo = fileInfo(ofn)
-            compareInfo(finfo, dfinfo, hassubs)
+            compareInfo(finfo, dfinfo)
             return ofn
     except Exception as e:
         errorRaise(sys.exc_info()[2], e)
 
 
-def compareInfo(finfo, dfinfo, hassubs):
+def compareInfo(finfo, dfinfo):
     try:
         fdur = infoDuration(finfo)
         dfdur = infoDuration(dfinfo)
@@ -172,13 +172,10 @@ def compareInfo(finfo, dfinfo, hassubs):
             raise Exception(
                 f"cleaned file is too short ({dfdur}s) {dpc}% of original length ({fdur}s)."
             )
-        trks = trackIndexes(finfo)
-        dtrks = trackIndexes(dfinfo)
-        for cn in [0, 1]:
-            if dtrks[cn] != trks[cn]:
-                raise Exception(f"missing track {cn} in output file")
-        if hassubs:
-            if len(dtrks) != 3:
-                raise Exception(f"subs missing from output file")
+        ftracks = getTracks(finfo)
+        dftracks = getTracks(dfinfo)
+        for xtype in ftracks:
+            if xtype not in dftracks:
+                raise Exception(f"missing {xtype} track in output file")
     except Exception as e:
         errorRaise(sys.exc_info()[2], e)
