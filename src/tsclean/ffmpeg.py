@@ -72,6 +72,23 @@ def trackIndexes(finfo):
         errorNotify(sys.exc_info()[2], e)
 
 
+def getTracks(finfo):
+    try:
+        types = ["video", "audio", "subtitle"]
+        trks = {}
+        for stream in finfo["streams"]:
+            if "codec_type" in stream:
+                if stream["codec_type"] in types:
+                    if stream["codec_type"] == "audio":
+                        if int(stream["channels"]) > 1:
+                            trks[stream["codec_type"]] = stream
+                    else:
+                        trks[stream["codec_type"]] = stream
+        return trks
+    except Exception as e:
+        errorNotify(sys.exc_info()[2], e)
+
+
 def extractAudioFromTs(fqfn):
     """Extracts the audio without conversion from a freeview ts file."""
     try:
@@ -112,24 +129,31 @@ def makeAudioFile(src, dest):
         errorRaise(sys.exc_info()[2], e)
 
 
+def buildMappingCommand(tracks):
+    try:
+        mapping = ""
+        types = {"video": "-vcodec", "audio": "-acodec", "subtitle": "-scodec"}
+        for xtype in types:
+            if xtype in tracks:
+                if "index" in tracks[xtype]:
+                    mapping += f" -map 0:{tracks[xtype]['index']} {types[xtype]} copy"
+        return mapping
+    except Exception as e:
+        errorNotify(sys.exc_info()[2], e)
+
+
 def tsClean(fqfn):
     try:
-        finfo = fileInfo(fqfn)
-        trks = trackIndexes(finfo)
         fdir, bfn, ext = splitFqfn(fqfn)
         ofn = os.path.join(fdir, f"{bfn}-cleaned{ext}")
         if os.path.exists(ofn):
             os.unlink(ofn)
+        finfo = fileInfo(fqfn)
+        tracks = getTracks(finfo)
+        mapping = buildMappingCommand(tracks)
         cmd = ["ffmpeg", "-i", fqfn]
-        scmd = f"-map 0:{trks[0]} -vcodec copy"
-        scmd += f" -map 0:{trks[1]} -acodec copy"
-        hassubs = hasSubtitles(finfo)
-        if hassubs:
-            scmd += f" -map 0:{trks[2]} -scodec copy"
-        cmd.extend(listCmd(scmd))
+        cmd.extend(listCmd(mapping))
         cmd.append(ofn)
-        # cmd = f"{cmd} {ofn}"
-        # print(cmd)
         sout, serr = shellCommand(cmd)
         if os.path.exists(ofn):
             dfinfo = fileInfo(ofn)
