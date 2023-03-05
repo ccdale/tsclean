@@ -152,9 +152,9 @@ def compareInfo(finfo, dfinfo, hassubs):
         dtrks = trackIndexes(dfinfo)
         for cn in [0, 1]:
             if dtrks[cn] != trks[cn]:
-                raise Exception(f"missing track {cn} in output file {ofn}")
+                raise Exception(f"missing track {cn} in output file")
         if hassubs:
             if len(dtrks) != 3:
-                raise Exception(f"subs missing from output file {ofn}")
+                raise Exception(f"subs missing from output file")
     except Exception as e:
         errorRaise(sys.exc_info()[2], e)
