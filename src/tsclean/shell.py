@@ -15,7 +15,7 @@ def listCmd(cmd):
                     f"cmd should be list or string, you gave {type(cmd)} {cmd}"
                 )
             else:
-                cmd = cmd.split(" ")
+                cmd = cmd.strip().split(" ")
         return cmd
     except Exception as e:
         errorRaise(sys.exc_info()[2], e)
