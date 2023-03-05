@@ -29,7 +29,7 @@ def shellCommand(cmd, canfail=False):
     """
     try:
         cmd = listCmd(cmd)
-        print(" ".join(cmd))
+        # print(" ".join(cmd))
         ret = subprocess.run(cmd, capture_output=True, text=True)
         if not canfail:
             # raise an exception if cmd returns an error code
