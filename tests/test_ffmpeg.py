@@ -1,9 +1,11 @@
 import os
 
 from tsclean.ffmpeg import (
+    buildMappingCommand,
     extractAudioFromTs,
     infoDuration,
     fileInfo,
+    getTracks,
     getStreamType,
     hasSubtitles,
     makeAudioFile,
@@ -48,6 +50,26 @@ def test_trackIndexes():
     assert vtrk == 0
     assert atrk == 1
     assert strk == 2
+
+
+def test_getTracks():
+    fqfn = os.path.abspath("tests/BBCTVChannel.ts")
+    finfo = fileInfo(fqfn)
+    tracks = getTracks(finfo)
+    types = ["video", "audio", "subtitle"]
+    for xtype in types:
+        assert xtype in tracks
+        assert "index" in tracks[xtype]
+
+
+def test_buildMappingCommand():
+    fqfn = os.path.abspath("tests/BBCTVChannel.ts")
+    finfo = fileInfo(fqfn)
+    tracks = getTracks(finfo)
+    mapping = buildMappingCommand(tracks)
+    atrack = tracks["audio"]
+    amap = f"-map 0:{atrack['index']} -acodec copy"
+    assert amap in mapping
 
 
 def test_extractAudioFromTs():
