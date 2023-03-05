@@ -120,15 +120,16 @@ def tsClean(fqfn):
         ofn = os.path.join(fdir, f"{bfn}-cleaned{ext}")
         if os.path.exists(ofn):
             os.unlink(ofn)
-        cmd = f"ffmpeg -i '{fqfn}' -map 0:{trks[0]} -vcodec copy"
-        cmd = f"{cmd} -map 0:{trks[1]} -acodec copy"
+        cmd = ["ffmpeg", "-i", f"'{fqfn}'"]
+        scmd = f"-map 0:{trks[0]} -vcodec copy"
+        scmd += f" -map 0:{trks[1]} -acodec copy"
         hassubs = hasSubtitles(finfo)
         if hassubs:
-            cmd = f"{cmd} -map 0:{trks[2]} -scodec copy"
-        cmd = listCmd(cmd)
+            scmd += f" -map 0:{trks[2]} -scodec copy"
+        cmd.extend(listCmd(scmd))
         cmd.append(f"'{ofn}'")
         # cmd = f"{cmd} {ofn}"
-        # print(cmd)
+        print(cmd)
         sout, serr = shellCommand(cmd)
         if os.path.exists(ofn):
             dfinfo = fileInfo(ofn)
