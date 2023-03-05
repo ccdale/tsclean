@@ -15,7 +15,7 @@ class TheException(Exception):
 
 
 def test_tsclean_version():
-    assert __version__ == "0.2.10"
+    assert __version__ == "0.2.11"
 
 
 def test_errorNotify(capsys):
