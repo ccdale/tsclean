@@ -3,7 +3,8 @@ import os
 import sys
 
 from tsclean import __version__, errorExit, errorNotify, errorRaise
-from tsclean.ffmpeg import tsClean
+from tsclean.ffmpeg import tsClean, makeAudioFile
+from tsclean.filename import splitFqfn
 
 
 def parseInput():
@@ -42,3 +43,13 @@ def doClean():
         sys.exit(0)
     except Exception as e:
         errorExit(sys.exc_info()[2], e)
+
+
+def doAudio():
+    try:
+        filename, force = parseInput()
+        fdir, bfn, ext = splitFqfn(filename)
+        dest = os.path.join(fdir, f"{bfn}.mp2")
+        ndest = makeAudioFile(filename, dest)
+    except Exception as e:
+        errorNotify(sys.exc_info()[2], e)
