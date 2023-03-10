@@ -53,3 +53,13 @@ def doAudio():
         ndest = makeAudioFile(filename, dest)
     except Exception as e:
         errorNotify(sys.exc_info()[2], e)
+
+
+def doMp3():
+    try:
+        filename, force = parseInput()
+        fdir, bfn, ext = splitFqfn(filename)
+        dest = os.path.join(fdir, f"{bfn}.mp3")
+        ndest = makeAudioFile(filename, dest)
+    except Exception as e:
+        errorNotify(sys.exc_info()[2], e)

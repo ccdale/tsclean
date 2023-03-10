@@ -18,6 +18,7 @@ pytest = "^7.2.1"
 [tool.poetry.scripts]
 tsclean = "tsclean.cleants:doClean"
 tsaudio = "tsclean.cleants:doAudio"
+tsmp3 = "tsclean.cleants:doMp3"
 
 
 [build-system]
