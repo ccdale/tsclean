@@ -63,3 +63,15 @@ def doMp3():
         ndest = makeAudioFile(filename, dest)
     except Exception as e:
         errorNotify(sys.exc_info()[2], e)
+
+
+def tsRadio():
+    """Function to pull radio programmes from tvheadend.
+
+    Radio programmes that tvheadend has recorded from freeview
+    (UK DVB).
+    """
+    try:
+        pass
+    except Exception as e:
+        errorNotify(sys.exc_info()[2], e)
