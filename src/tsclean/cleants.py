@@ -2,7 +2,9 @@ import argparse
 import os
 import sys
 
-from tsclean import __version__, errorExit, errorNotify, errorRaise
+import tsclean
+from tsclean import errorExit, errorNotify, errorRaise
+from tsclean.config import getConfig
 from tsclean.ffmpeg import tsClean, makeAudioFile
 from tsclean.filename import splitFqfn
 
@@ -14,7 +16,10 @@ def parseInput():
             description="Clean broadcast transport stream files recorded from Freeview (UK DVB)."
         )
         parser.add_argument(
-            "-v", "--version", action="version", version=f"%(prog)s {__version__}"
+            "-v",
+            "--version",
+            action="version",
+            version=f"%(prog)s {tsclean.__version__}",
         )
         parser.add_argument(
             "-f",
@@ -72,6 +77,9 @@ def tsRadio():
     (UK DVB).
     """
     try:
-        pass
+        cfg = getConfig()
+        tsclean.tvhipaddr = cfg.get("tvhipaddr", "")
+        tsclean.tvhuser = cfg.get("tvhuser", "")
+        tsclean.tvhpass = cfg.get("tvhpass", "")
     except Exception as e:
         errorNotify(sys.exc_info()[2], e)
