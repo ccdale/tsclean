@@ -1,5 +1,3 @@
-import sys
-
 from tsclean.config import getConfig
 
 
