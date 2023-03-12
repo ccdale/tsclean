@@ -1,3 +1,4 @@
+# import json
 import sys
 
 import requests
@@ -27,3 +28,18 @@ def sendToTVH(route, data=None):
         return r.json()
     except Exception as e:
         errorRaise(sys.exc_info()[2], e)
+
+
+def getRadioRecorded():
+    try:
+        route = "dvr/entry/grid_finished"
+        recs = sendToTVH(route)
+        # with open("grid_finished.json", "w") as ofn:
+        # json.dump(recs, ofn, indent=4)
+        radiorecs = []
+        for rec in recs["entries"]:
+            if rec["channelname"].startswith("BBC Radio"):
+                radiorecs.append(rec)
+        return radiorecs
+    except Exception as e:
+        errorNotify(sys.exc_info()[2], e)
