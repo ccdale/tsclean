@@ -1,6 +1,6 @@
 import sys
 
-__version__ = "0.5.10"
+__version__ = "0.5.11"
 tvhuser = "unset"
 tvhpass = "unset"
 tvhipaddr = "druidmedia"
