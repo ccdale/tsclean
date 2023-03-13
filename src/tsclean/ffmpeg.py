@@ -120,7 +120,7 @@ def makeAudioFile(src, dest):
         if os.path.exists(src):
             if os.path.exists(dest):
                 os.unlink(dest)
-            cmd = ["ffmpeg", "-i", src, "-q:a", "0", "-map", "a", dest]
+            cmd = ["ffmpeg", "-i", src, "-q:a", "4", "-map", "a", dest]
             proc = subprocess.run(cmd)
             if proc.returncode == 0:
                 if os.path.exists(dest):
