@@ -53,6 +53,13 @@ def doRadio(show, testing=True):
         # if match:
         #     audio["track"] = match[0]
         audio.save()
-        return mp3
+        if not testing:
+            destdir = (
+                f"{tsclean.radiooutputdir}/{show['channelname']}/{show['disp_title']}"
+            )
+            os.makedirs(destdir)
+            dest = "/".join([destdir, os.path.basename(mp3)])
+            os.rename(mp3, dest)
+        return dest
     except Exception as e:
         errorNotify(sys.exc_info()[2], e)
