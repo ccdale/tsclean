@@ -2,7 +2,7 @@ import os
 
 import tsclean
 from tsclean.config import getConfig
-from tsclean.radio import copyRadioFile
+from tsclean.radio import copyRadioFile, doRadio
 from tsclean.tvh import getRadioRecorded
 
 
@@ -24,3 +24,17 @@ def test_copyRadioFile():
     assert os.path.exists(dest)
     os.unlink(dest)
     assert not os.path.exists(dest)
+
+
+def test_doRadio():
+    cfg = getConfig()
+    tsclean.tvhipaddr = cfg.get("tvhipaddr", "")
+    tsclean.tvhuser = cfg.get("tvhuser", "")
+    tsclean.tvhpass = cfg.get("tvhpass", "")
+    tsclean.sshuser = cfg.get("sshuser", "")
+    tsclean.sshhost = cfg.get("sshhost", "")
+    rrecs = getRadioRecorded()
+    show = rrecs[0]
+    tsclean.radiooutputdir = "/tmp"
+    mp3 = doRadio(show)
+    assert os.path.exists(mp3)
