@@ -45,9 +45,9 @@ def doRadio(show):
         # audio["comment"] = show["disp_description"]
         # audio["album"] = show["disp_title"]
         audio["albumartist"] = show["channelname"]
-        match = re.search("[0-9]+", show["disp_description"])
-        if match:
-            audio["track"] = match[0]
+        # match = re.search("[0-9]+", show["disp_description"])
+        # if match:
+        #     audio["track"] = match[0]
         audio.save()
         return mp3
     except Exception as e:
