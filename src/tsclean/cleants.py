@@ -79,22 +79,22 @@ def tsRadio():
     (UK DVB).
     """
     try:
-        print("asking for config")
+        # print("asking for config")
         cfg = getConfig()
-        print(f"{cfg=}")
+        # print(f"{cfg=}")
         tsclean.tvhipaddr = cfg.get("tvhipaddr", "")
         tsclean.tvhuser = cfg.get("tvhuser", "")
         tsclean.tvhpass = cfg.get("tvhpass", "")
         tsclean.radiooutputdir = cfg.get("radiooutputdir", "~/radio")
         tsclean.sshhost = cfg.get("sshhost", "druidmedia")
         tsclean.sshuser = cfg.get("sshuser", "chris")
-        print("Asking for radio")
+        # print("Asking for radio")
         rrecs = getRadioRecorded()
         lcn = len(rrecs)
-        print(f"{lcn=}")
-        print("starting loop")
+        # print(f"{lcn=}")
+        # print("starting loop")
         for cn, rec in enumerate(rrecs):
-            print(f"{cn+1:>2}/{lcn} {show['disp_title']}")
+            print(f"{cn+1:>2}/{lcn} {rec['disp_title']}")
             mp3 = doRadio(rec, testing=False)
             break
     except Exception as e:
