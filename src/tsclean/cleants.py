@@ -7,6 +7,7 @@ from tsclean import errorExit, errorNotify, errorRaise
 from tsclean.config import getConfig
 from tsclean.ffmpeg import tsClean, makeAudioFile
 from tsclean.filename import splitFqfn
+from tsclean.tvh import getRadioRecorded
 
 
 def parseInput():
@@ -81,5 +82,9 @@ def tsRadio():
         tsclean.tvhipaddr = cfg.get("tvhipaddr", "")
         tsclean.tvhuser = cfg.get("tvhuser", "")
         tsclean.tvhpass = cfg.get("tvhpass", "")
+        tsclean.radiooutputdir = cfg.get("radiooutputdir", "~/radio")
+        tsclean.sshhost = cfg.get("sshhost", "druidmedia")
+        tsclean.sshuser = cfg.get("sshuser", "chris")
+        rrecs = getRadioRecorded()
     except Exception as e:
         errorNotify(sys.exc_info()[2], e)

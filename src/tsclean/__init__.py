@@ -4,6 +4,9 @@ __version__ = "0.5.4"
 tvhuser = "unset"
 tvhpass = "unset"
 tvhipaddr = "druidmedia"
+radiooutputdir = "~/radio"
+sshhost = "druidmedia"
+sshuser = "chris"
 appname = "tsclean"
 
 
