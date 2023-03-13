@@ -40,7 +40,7 @@ def doRadio(show):
         if mp3 is None:
             raise Exception(f"failed to create mp3 from {src}")
         audio = EasyID3(mp3)
-        audio["genre"] = 101
+        audio["genre"] = "Speech"
         audio["title"] = show["disp_title"]
         audio["comment"] = show["disp_description"]
         audio["album"] = show["disp_title"]
