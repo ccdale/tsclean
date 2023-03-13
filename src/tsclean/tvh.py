@@ -43,3 +43,12 @@ def getRadioRecorded():
         return radiorecs
     except Exception as e:
         errorNotify(sys.exc_info()[2], e)
+
+
+def deleteShow(show):
+    try:
+        route = "dvr/entry/remove"
+        dat = {"uuid": show["uuid"]}
+        junk = sendToTVH(route, data=dat)
+    except Exception as e:
+        errorNotify(sys.exc_info()[2], e)

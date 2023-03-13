@@ -8,6 +8,7 @@ from mutagen.easyid3 import EasyID3
 import tsclean
 from tsclean import errorExit, errorNotify, errorRaise
 from tsclean.ffmpeg import makeAudioFile
+from tsclean.tvh import deleteShow
 
 # TODO
 # DONE - Copy file from druidmedia
@@ -30,7 +31,7 @@ def copyRadioFile(show):
         errorNotify(sys.exc_info()[2], e)
 
 
-def doRadio(show):
+def doRadio(show, testing=True):
     try:
         src = copyRadioFile(show)
         fn = show["filename"]
@@ -39,6 +40,9 @@ def doRadio(show):
         mp3 = makeAudioFile(src, dest)
         if mp3 is None:
             raise Exception(f"failed to create mp3 from {src}")
+        os.unlink(src)
+        if not testing:
+            deleteShow(show)
         audio = EasyID3(mp3)
         audio["genre"] = "Speech"
         audio["title"] = show["disp_title"]
