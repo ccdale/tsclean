@@ -42,8 +42,8 @@ def doRadio(show):
         audio = EasyID3(mp3)
         audio["genre"] = "Speech"
         audio["title"] = show["disp_title"]
-        audio["comment"] = show["disp_description"]
-        audio["album"] = show["disp_title"]
+        # audio["comment"] = show["disp_description"]
+        # audio["album"] = show["disp_title"]
         audio["albumartist"] = show["channelname"]
         match = re.search("[0-9]+", show["disp_description"])
         if match:
