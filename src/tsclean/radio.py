@@ -13,8 +13,8 @@ from tsclean.tvh import deleteShow
 # TODO
 # DONE - Copy file from druidmedia
 # DONE - convert file to mp3
-# tag file with show information
-# move file into the radio directory hierarchy
+# DONE - tag file with show information
+# DONE - move file into the radio directory hierarchy
 
 
 def copyRadioFile(show):
