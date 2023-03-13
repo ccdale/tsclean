@@ -54,9 +54,7 @@ def doRadio(show, testing=True):
         #     audio["track"] = match[0]
         audio.save()
         if not testing:
-            destdir = (
-                f"{tsclean.radiooutputdir}/{show['channelname']}/{show['disp_title']}"
-            )
+            destdir = f"{os.path.abspath(os.path.expanduser(tsclean.radiooutputdir))}/{show['channelname']}/{show['disp_title']}"
             os.makedirs(destdir)
             dest = "/".join([destdir, os.path.basename(mp3)])
             os.rename(mp3, dest)
