@@ -7,6 +7,7 @@ from tsclean import errorExit, errorNotify, errorRaise
 from tsclean.config import getConfig
 from tsclean.ffmpeg import tsClean, makeAudioFile
 from tsclean.filename import splitFqfn
+from tsclean.radio import doRadio
 from tsclean.tvh import getRadioRecorded
 
 
@@ -86,5 +87,8 @@ def tsRadio():
         tsclean.sshhost = cfg.get("sshhost", "druidmedia")
         tsclean.sshuser = cfg.get("sshuser", "chris")
         rrecs = getRadioRecorded()
+        for rec in rrecs:
+            mp3 = doRadio(rec, testing=False)
+            break
     except Exception as e:
         errorNotify(sys.exc_info()[2], e)
