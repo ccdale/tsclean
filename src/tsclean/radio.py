@@ -40,13 +40,14 @@ def doRadio(show):
         if mp3 is None:
             raise Exception(f"failed to create mp3 from {src}")
         audio = EasyID3(mp3)
+        audio["genre"] = 101
         audio["title"] = show["disp_title"]
-        audio["description"] = show["disp_description"]
+        audio["comment"] = show["disp_description"]
         audio["album"] = show["disp_title"]
         audio["albumartist"] = show["channelname"]
-        match = re.search("[0-9]+/[0-9]+", show["disp_description"])
+        match = re.search("[0-9]+", show["disp_description"])
         if match:
-            audio["index"] = match[0]
+            audio["track"] = match[0]
         audio.save()
         return mp3
     except Exception as e:
