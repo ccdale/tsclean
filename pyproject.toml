@@ -22,6 +22,7 @@ pytest = "^7.2.1"
 tsclean = "tsclean.cleants:doClean"
 tsaudio = "tsclean.cleants:doAudio"
 tsmp3 = "tsclean.cleants:doMp3"
+tsradio = "tsclean.cleants.tsRadio"
 
 
 [build-system]

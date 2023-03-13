@@ -87,7 +87,9 @@ def tsRadio():
         tsclean.sshhost = cfg.get("sshhost", "druidmedia")
         tsclean.sshuser = cfg.get("sshuser", "chris")
         rrecs = getRadioRecorded()
-        for rec in rrecs:
+        lcn = len(rrecs)
+        for cn, rec in enumerate(rrecs):
+            print(f"{cn+1:>2}/{lcn} {show['disp_title']}")
             mp3 = doRadio(rec, testing=False)
             break
     except Exception as e:
