@@ -35,7 +35,7 @@ def doRadio(show):
         src = copyRadioFile(show)
         fn = show["filename"]
         basefn = fn.split("/")[-1].split(".")[0]
-        dest = "/".join([os.path.dirname(src), basefn, ".mp3"])
+        dest = "/".join([os.path.dirname(src), f"{basefn}.mp3"])
         mp3 = makeAudioFile(src, dest)
         if mp3 is None:
             raise Exception(f"failed to create mp3 from {src}")
