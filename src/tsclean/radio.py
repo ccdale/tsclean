@@ -3,7 +3,7 @@ import re
 import sys
 
 from fabric import Connection
-from mutagen import EasyID3
+from mutagen.easyid3 import EasyID3
 
 import tsclean
 from tsclean import errorExit, errorNotify, errorRaise
