@@ -97,6 +97,6 @@ def tsRadio():
             print(f"{cn+1:>2}/{lcn} {rec['disp_title']}")
             mp3 = doRadio(rec, testing=False)
             print(f"{mp3=}")
-            break
+            # break
     except Exception as e:
         errorNotify(sys.exc_info()[2], e)
