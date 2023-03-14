@@ -46,12 +46,12 @@ def doRadio(show, testing=True):
         audio = EasyID3(mp3)
         audio["genre"] = "Speech"
         audio["title"] = show["disp_title"]
-        # audio["comment"] = show["disp_description"]
-        # audio["album"] = show["disp_title"]
+        audio["composer"] = show["disp_description"]
+        audio["album"] = show["disp_title"]
         audio["albumartist"] = show["channelname"]
-        # match = re.search("[0-9]+", show["disp_description"])
-        # if match:
-        #     audio["track"] = match[0]
+        match = re.search("^[0-9]+/[0-9]+", show["disp_description"])
+        if match:
+            audio["tracknumber"], audio["discnumber"] = match[0].split("/")
         audio.save()
         if not testing:
             destdir = f"{os.path.abspath(os.path.expanduser(tsclean.radiooutputdir))}/{show['channelname']}/{show['disp_title']}"
