@@ -16,13 +16,13 @@ from tsclean.filename import splitFqfn
 
 
 def test_fileInfo():
-    fqfn = os.path.abspath("tests/BBCTVChannel.ts")
+    fqfn = os.path.abspath("tests/data/tv.ts")
     finfo = fileInfo(fqfn)
     assert "streams" in finfo
 
 
 def test_getSteamType_video():
-    fqfn = os.path.abspath("tests/BBCTVChannel.ts")
+    fqfn = os.path.abspath("tests/data/tv.ts")
     finfo = fileInfo(fqfn)
     stream = getStreamType(finfo, stype="video")
     assert "codec_name" in stream
@@ -30,13 +30,13 @@ def test_getSteamType_video():
 
 
 def test_hasSubtitles():
-    fqfn = os.path.abspath("tests/BBCTVChannel.ts")
+    fqfn = os.path.abspath("tests/data/tv.ts")
     finfo = fileInfo(fqfn)
     assert True == hasSubtitles(finfo)
 
 
 def test_fileDuration():
-    fqfn = os.path.abspath("tests/BBCTVChannel.ts")
+    fqfn = os.path.abspath("tests/data/tv.ts")
     finfo = fileInfo(fqfn)
     dur = infoDuration(finfo)
     assert dur > 0
@@ -44,7 +44,7 @@ def test_fileDuration():
 
 
 def test_trackIndexes():
-    fqfn = os.path.abspath("tests/BBCTVChannel.ts")
+    fqfn = os.path.abspath("tests/data/tv.ts")
     finfo = fileInfo(fqfn)
     vtrk, atrk, strk = trackIndexes(finfo)
     assert vtrk == 0
@@ -53,7 +53,7 @@ def test_trackIndexes():
 
 
 def test_getTracks():
-    fqfn = os.path.abspath("tests/BBCTVChannel.ts")
+    fqfn = os.path.abspath("tests/data/tv.ts")
     finfo = fileInfo(fqfn)
     tracks = getTracks(finfo)
     types = ["video", "audio", "subtitle"]
@@ -63,7 +63,7 @@ def test_getTracks():
 
 
 def test_buildMappingCommand():
-    fqfn = os.path.abspath("tests/BBCTVChannel.ts")
+    fqfn = os.path.abspath("tests/data/tv.ts")
     finfo = fileInfo(fqfn)
     tracks = getTracks(finfo)
     mapping = buildMappingCommand(tracks)
@@ -73,12 +73,12 @@ def test_buildMappingCommand():
 
 
 def test_extractAudioFromTs():
-    fqfn = os.path.abspath("tests/The-News-Quiz-E08.ts")
+    fqfn = os.path.abspath("tests/data/radio.ts")
     assert True == extractAudioFromTs(fqfn)
 
 
 def test_makeAudioFile():
-    fqfn = os.path.abspath("tests/The-News-Quiz-E08.ts")
+    fqfn = os.path.abspath("tests/data/radio.ts")
     fdir, bfn, ext = splitFqfn(fqfn)
     dest = os.path.join(fdir, f"{bfn}.mp2")
     ndest = makeAudioFile(fqfn, dest)
@@ -86,7 +86,7 @@ def test_makeAudioFile():
 
 
 def test_tsClean():
-    fqfn = os.path.abspath("tests/BBCTVChannel.ts")
+    fqfn = os.path.abspath("tests/data/tv.ts")
     fdir, bfn, ext = splitFqfn(fqfn)
     expecteddest = os.path.join(fdir, f"{bfn}-cleaned{ext}")
     dest = tsClean(fqfn)

@@ -8,7 +8,7 @@ from tsclean.filename import splitFqfn
 from tsclean.shell import listCmd, shellCommand
 
 
-def fileInfo(fqfn):
+def fileInfo(fqfn, showtags=False):
     try:
         if os.path.exists(fqfn):
             cmd = [
@@ -18,8 +18,10 @@ def fileInfo(fqfn):
                 "-of",
                 "json",
                 "-show_streams",
-                fqfn,
             ]
+            if showtags:
+                cmd.append("-show_format")
+            cmd.append(fqfn)
             out, err = shellCommand(cmd)
             return json.loads(out)
     except Exception as e:
@@ -102,9 +104,12 @@ def extractAudioFromTs(fqfn):
             cmd = f"ffmpeg -i {fqfn} -map 0:{trks[1]} -acodec copy {dest}"
             sout, serr = shellCommand(cmd)
             if os.path.exists(dest):
+                print("output seems to exist")
                 dfinfo = fileInfo(dest)
+                print(f"{dfinfo=}")
                 vtrk, atrk, strk = trackIndexes(finfo)
-                if vtrk == -1 and strk == -1 and atrk == 1:
+                print(f"{vtrk=}, {atrk=}, {strk=}")
+                if vtrk == -1 and strk == -1 and atrk >= 0:
                     return True
         return False
     except Exception as e:
