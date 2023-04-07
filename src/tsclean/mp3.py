@@ -4,6 +4,7 @@ import sys
 
 import tsclean
 from tsclean import errorExit, errorNotify, errorRaise
+from tsclean.ffmpeg import makeAudioFile
 
 
 def parseInput():
@@ -46,5 +47,6 @@ def ytmp3():
         # the members can be accessed by `args.title` etc
         args = parseInput()
         print(f"{args=}")
+        makeAudioFile(args.input, args.outputfilename)
     except Exception as e:
         errorNotify(sys.exc_info()[2], e)
