@@ -23,6 +23,7 @@ tsclean = "tsclean.cleants:doClean"
 tsaudio = "tsclean.cleants:doAudio"
 tsmp3 = "tsclean.cleants:doMp3"
 tsradio = "tsclean.cleants:tsRadio"
+ytmp3 = "tsclean.mp3:ytmp3"
 
 # [tool.pytest.ini_options]
 # filterwarnings = [
