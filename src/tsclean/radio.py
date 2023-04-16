@@ -8,6 +8,7 @@ from mutagen.easyid3 import EasyID3
 import tsclean
 from tsclean import errorExit, errorNotify, errorRaise
 from tsclean.ffmpeg import makeAudioFile
+from tsclean.filename import incrementFileName
 from tsclean.tvh import deleteShow
 
 # TODO
@@ -46,7 +47,12 @@ def doRadio(show, testing=False):
         src = copyRadioFile(show)
         # fn = show["filename"]
         basepath = os.path.splitext(src)[0]
-        dest = f"{basepath}.mp3"
+        match = re.search("^[0-9]+/[0-9]+", show["disp_description"])
+        titleext = ""
+        if match:
+            shownumber, totalshows = match[0].split("/")
+            titleext = f"_{shownumber}-of-{totalshows}"
+        dest = f"{basepath}{titleext}.mp3"
         # basefn = fn.split("/")[-1].split(".")[0]
         # dest = "/".join([os.path.dirname(src), f"{basefn}.mp3"])
         mp3 = makeAudioFile(src, dest)
@@ -61,7 +67,7 @@ def doRadio(show, testing=False):
         audio["composer"] = show["disp_description"]
         audio["album"] = show["disp_title"]
         audio["albumartist"] = show["channelname"]
-        match = re.search("^[0-9]+/[0-9]+", show["disp_description"])
+        # match = re.search("^[0-9]+/[0-9]+", show["disp_description"])
         if match:
             audio["tracknumber"], audio["discnumber"] = match[0].split("/")
         audio.save()
@@ -69,6 +75,8 @@ def doRadio(show, testing=False):
             destdir = f"{os.path.abspath(os.path.expanduser(tsclean.radiooutputdir))}/{show['channelname']}/{show['disp_title']}"
             os.makedirs(destdir)
             dest = "/".join([destdir, os.path.basename(mp3)])
+            while os.path.exists(dest):
+                dest = incrementFileName(dest, addnumber=True)
             os.rename(mp3, dest)
         else:
             dest = mp3
