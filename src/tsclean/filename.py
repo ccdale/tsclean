@@ -28,3 +28,13 @@ def incrementFileName(fqfn, addnumber=False):
         return "/".join([fdir, f"{bfn}{ext}"])
     except Exception as e:
         errorNotify(sys.exc_info()[2], e)
+
+
+def cleanTsFileName(fqfn):
+    try:
+        fdir, bfn, ext = splitFqfn(fqfn)
+        match = re.split("-[0-9]+$", bfn)
+        bfn = match[0]
+        return "/".join([fdir, f"{bfn}{ext}"])
+    except Exception as e:
+        errorNotify(sys.exc_info()[2], e)

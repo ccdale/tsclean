@@ -8,7 +8,7 @@ from mutagen.easyid3 import EasyID3
 import tsclean
 from tsclean import errorExit, errorNotify, errorRaise
 from tsclean.ffmpeg import makeAudioFile
-from tsclean.filename import incrementFileName
+from tsclean.filename import cleanTsFileName, incrementFileName
 from tsclean.tvh import deleteShow
 
 # TODO
@@ -29,7 +29,7 @@ def copyRadioFile(show):
         # basefn = fn.split("/")[-1]
         oppath = os.path.abspath(os.path.expanduser(tsclean.radiooutputdir))
         os.makedirs(oppath, exist_ok=True)
-        dest = f"{oppath}/{basefn}"
+        dest = cleanTsFileName(f"{oppath}/{basefn}")
         with Connection(host=tsclean.sshhost, user=tsclean.sshuser) as c:
             c.get(show["filename"], dest)
         return dest
