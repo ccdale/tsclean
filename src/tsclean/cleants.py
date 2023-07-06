@@ -5,6 +5,7 @@ import sys
 import tsclean
 from tsclean import errorExit, errorNotify, errorRaise
 from tsclean.config import getConfig
+from tsclean.comskip import doComSkip
 from tsclean.ffmpeg import tsClean, makeAudioFile
 from tsclean.filename import splitFqfn
 from tsclean.radio import doRadio
@@ -29,6 +30,7 @@ def parseInput():
             help="Overwrite input file with output file if sanity tests pass.",
             action="store_true",
         )
+        parser.add_argument("-c", "--channel", help="channel name", default="NOT SET")
         parser.add_argument("filename", help="path and filename of file to clean.")
         args = parser.parse_args()
         # filename = " ".join(args.filename)
@@ -36,17 +38,19 @@ def parseInput():
         filename = os.path.abspath(os.path.expanduser(filename))
         if not os.path.exists(filename):
             raise Exception(f"file {filename} does not exist")
-        return filename, args.force
+        return filename, args.force, args.channel.strip()
     except Exception as e:
         errorExit(sys.exc_info()[2], e)
 
 
 def doClean():
     try:
-        filename, force = parseInput()
+        filename, force, channel = parseInput()
         ofn = tsClean(filename)
         if os.path.exists(ofn) and force:
             os.rename(ofn, filename)
+        if not channel.startswith("BBC"):
+            doComSkip(filename)
         sys.exit(0)
     except Exception as e:
         errorExit(sys.exc_info()[2], e)
@@ -54,7 +58,7 @@ def doClean():
 
 def doAudio():
     try:
-        filename, force = parseInput()
+        filename, force, channel = parseInput()
         fdir, bfn, ext = splitFqfn(filename)
         dest = os.path.join(fdir, f"{bfn}.mp2")
         ndest = makeAudioFile(filename, dest)
@@ -64,7 +68,7 @@ def doAudio():
 
 def doMp3():
     try:
-        filename, force = parseInput()
+        filename, force, channel = parseInput()
         fdir, bfn, ext = splitFqfn(filename)
         dest = os.path.join(fdir, f"{bfn}.mp3")
         ndest = makeAudioFile(filename, dest)

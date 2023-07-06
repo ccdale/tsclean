@@ -42,3 +42,12 @@ def shellCommand(cmd, canfail=False):
         errorRaise(sys.exc_info()[2], e)
     except Exception as e:
         errorRaise(sys.exc_info()[2], e)
+
+
+def beNice(cmd, nice=19):
+    try:
+        ncmd = ["nice", "-n", f"{nice}"]
+        ncmd.extend(listCmd(cmd))
+        return ncmd
+    except Exception as e:
+        errorNotify(sys.exc_info()[2], e)
