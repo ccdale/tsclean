@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "tsclean"
-version = "0.7.1"
+version = "0.7.2"
 description = "Clean broadcast transport stream files recorded from Freeview (UK DVB)."
 authors = ["ccdale <chris.allison@hivehome.com>"]
 readme = "README.md"
