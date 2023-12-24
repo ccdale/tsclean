@@ -53,11 +53,16 @@ def ytmp3():
         if mp3 is None:
             raise Exception(f"failed to create mp3 from {src}")
         audio = EasyID3(mp3)
-        audio["title"] = args.title
-        audio["album"] = args.album
-        audio["artist"] = args.artist
-        audio["genre"] = args.genre
-        audio["tracknumber"] = args.tracknumber
+        if args.title is None:
+            audio["title"] = args.title
+        if args.album is not None:
+            audio["album"] = args.album
+        if args.artist is not None:
+            audio["artist"] = args.artist
+        if args.genre is not None:
+            audio["genre"] = args.genre
+        if args.tracknumber is not None:
+            audio["tracknumber"] = args.tracknumber
         audio.save()
         print(f"created {mp3} from {args.input}")
     except Exception as e:
