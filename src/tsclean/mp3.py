@@ -2,6 +2,8 @@ import argparse
 import os
 import sys
 
+from mutagen.easyid3 import EasyID3
+
 import tsclean
 from tsclean import errorExit, errorNotify, errorRaise
 from tsclean.ffmpeg import makeAudioFile
@@ -47,6 +49,16 @@ def ytmp3():
         # the members can be accessed by `args.title` etc
         args = parseInput()
         print(f"{args=}")
-        makeAudioFile(args.input, args.outputfilename)
+        mp3 = makeAudioFile(args.input, args.outputfilename)
+        if mp3 is None:
+            raise Exception(f"failed to create mp3 from {src}")
+        audio = EasyID3(mp3)
+        audio["title"] = args.title
+        audio["album"] = args.album
+        audio["artist"] = args.artist
+        audio["genre"] = args.genre
+        audio["tracknumber"] = args.tracknumber
+        audio.save()
+        print(f"created {mp3} from {args.input}")
     except Exception as e:
-        errorNotify(sys.exc_info()[2], e)
+        errorExit(sys.exc_info()[2], e)
