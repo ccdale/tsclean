@@ -30,11 +30,26 @@ def fileInfo(fqfn, showtags=False):
 
 def getStreamType(finfo, stype="video"):
     try:
+        if stype == "audio":
+            return pickAudio(finfo)
         for stream in finfo["streams"]:
             if "codec_type" in stream and stream["codec_type"] == stype:
                 return stream
     except Exception as e:
         errorNotify(sys.exc_info()[2], e)
+
+
+def pickAudio(finfo):
+    try:
+        for stream in finfo["streams"]:
+            if "codec_type" in stream and stream["codec_type"] == "audio":
+                if (
+                    "disposition" in stream
+                    and stream["disposition"]["visual_impaired"] == 0
+                ):
+                    return stream
+    except Exception as e:
+        errorRaise(sys.exc_info()[2], e)
 
 
 def hasSubtitles(finfo):
@@ -65,7 +80,10 @@ def trackIndexes(finfo):
                 if stream["codec_type"] == "video":
                     vtrack = stream["index"]
                 elif stream["codec_type"] == "audio":
-                    if int(stream["channels"]) > 1:
+                    if (
+                        "disposition" in stream
+                        and stream["disposition"]["visual_impaired"] == 0
+                    ):
                         atrack = stream["index"]
                 elif stream["codec_type"] == "subtitle":
                     strack = stream["index"]
