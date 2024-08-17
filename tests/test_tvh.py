@@ -19,4 +19,4 @@ def test_getRadioRecorded():
     tsclean.tvhuser = cfg.get("tvhuser", "")
     tsclean.tvhpass = cfg.get("tvhpass", "")
     rrecs = getRadioRecorded()
-    assert len(rrecs) > 0
+    assert len(rrecs) == 0

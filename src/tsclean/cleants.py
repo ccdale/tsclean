@@ -53,6 +53,9 @@ def doClean():
             doComSkip(filename)
         sys.exit(0)
     except Exception as e:
+        if ofn in locals():
+            if os.path.exists(ofn):
+                os.unlink(ofn)
         errorExit(sys.exc_info()[2], e)
 
 
