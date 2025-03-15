@@ -24,6 +24,7 @@ tsaudio = "tsclean.cleants:doAudio"
 tsmp3 = "tsclean.cleants:doMp3"
 tsradio = "tsclean.cleants:tsRadio"
 ytmp3 = "tsclean.mp3:ytmp3"
+cfmg = "tsclean.cleants:checkFfmpegCmd"
 
 # [tool.pytest.ini_options]
 # filterwarnings = [

@@ -107,3 +107,11 @@ def tsRadio():
             # break
     except Exception as e:
         errorNotify(sys.exc_info()[2], e)
+
+
+def checkFfmpegCmd():
+    try:
+        filename, force, channel = parseInput()
+        ofn = tsClean(filename)
+    except Exception as e:
+        errorRaise(sys.exc_info()[2], e)
