@@ -187,7 +187,8 @@ def tsClean(fqfn):
         cmd.extend(listCmd(mapping))
         cmd.append(ofn)
         sout, serr = shellCommand(cmd)
-        print(f"{' '.join(cmd)}\n\nstdout:\n{sout}\n\nstderr:\n{serr}")
+        # print(f"{' '.join(cmd)}\n\nstdout:\n{sout}\n\nstderr:\n{serr}")
+        print(f"{' '.join(cmd)}\n\nstdout:\n{sout}")
         if os.path.exists(ofn):
             dfinfo = fileInfo(ofn)
             compareInfo(finfo, dfinfo)
