@@ -164,7 +164,7 @@ def buildMappingCommand(tracks):
         for xtype in types.keys():
             if xtype in tracks:
                 for stream in tracks[xtype]:
-                    if index in stream:
+                    if "index" in stream:
                         mapping += f" -map 0:{stream['index']} {types[xtype]} copy"
                 # if "index" in tracks[xtype]:
                 #     mapping += f" -map 0:{tracks[xtype]['index']} {types[xtype]} copy"

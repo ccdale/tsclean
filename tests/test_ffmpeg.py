@@ -59,7 +59,7 @@ def test_getTracks():
     types = ["video", "audio", "subtitle"]
     for xtype in types:
         assert xtype in tracks
-        assert "index" in tracks[xtype]
+        assert "index" in tracks[xtype][0]
 
 
 def test_buildMappingCommand():
@@ -67,7 +67,8 @@ def test_buildMappingCommand():
     finfo = fileInfo(fqfn)
     tracks = getTracks(finfo)
     mapping = buildMappingCommand(tracks)
-    atrack = tracks["audio"]
+    # print(mapping)
+    atrack = tracks["audio"][0]
     amap = f"-map 0:{atrack['index']} -acodec copy"
     assert amap in mapping
 
