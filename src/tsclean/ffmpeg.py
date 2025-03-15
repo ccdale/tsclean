@@ -99,11 +99,14 @@ def getTracks(finfo):
         for stream in finfo["streams"]:
             if "codec_type" in stream:
                 if stream["codec_type"] in types:
-                    if stream["codec_type"] == "audio":
-                        if int(stream["channels"]) > 1:
-                            trks[stream["codec_type"]] = stream
-                    else:
-                        trks[stream["codec_type"]] = stream
+                    if stream["codec_type"] not in trks:
+                        trks[stream["codec_type"]] = []
+                    trks[stream["codec_type"]].append(stream)
+                    # if stream["codec_type"] == "audio":
+                    #     if int(stream["channels"]) > 1:
+                    #         trks[stream["codec_type"]] = stream
+                    # else:
+                    #     trks[stream["codec_type"]] = stream
         return trks
     except Exception as e:
         errorNotify(sys.exc_info()[2], e)
@@ -155,12 +158,16 @@ def makeAudioFile(src, dest):
 
 def buildMappingCommand(tracks):
     try:
+        # tracks are now lists of each codec
         mapping = ""
         types = {"video": "-vcodec", "audio": "-acodec", "subtitle": "-scodec"}
-        for xtype in types:
+        for xtype in types.keys():
             if xtype in tracks:
-                if "index" in tracks[xtype]:
-                    mapping += f" -map 0:{tracks[xtype]['index']} {types[xtype]} copy"
+                for stream in tracks[xtype]:
+                    if index in stream:
+                        mapping += f" -map 0:{stream['index']} {types[xtype]} copy"
+                # if "index" in tracks[xtype]:
+                #     mapping += f" -map 0:{tracks[xtype]['index']} {types[xtype]} copy"
         return mapping
     except Exception as e:
         errorNotify(sys.exc_info()[2], e)
@@ -173,6 +180,7 @@ def tsClean(fqfn):
         if os.path.exists(ofn):
             os.unlink(ofn)
         finfo = fileInfo(fqfn)
+        #  tracks are now lists of each codec
         tracks = getTracks(finfo)
         mapping = buildMappingCommand(tracks)
         cmd = ["ffmpeg", "-i", fqfn]
